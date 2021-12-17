@@ -100,11 +100,15 @@ public class App {
                                         )
                                         .run(materializer)
                                         .thenApply(
-                                                
-                                        )
+                                                sum -> new Pair<>(
+                                                        req.first(),
+                                                        (sum / req.second())
+                                                )
+                                        );
                             }
-                    )
+                    );
                         })
+                .map()
     }
 
     public static void main(String[] args) throws IOException {
