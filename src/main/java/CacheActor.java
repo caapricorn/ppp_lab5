@@ -14,7 +14,9 @@ public class CacheActor extends AbstractActor {
                 .match(
                         Message.class,
                         m -> {
-                            getSender()
+                            getSender().tell(
+                                    storage.getOrDefault(m.getUrl(), -1)
+                            );
                         }
                 )
     }
