@@ -5,4 +5,6 @@ public class Message {
     public Message(String url) {
         this.url = url;
     }
+
+    
 }
