@@ -6,6 +6,7 @@ import akka.http.javadsl.Http;
 import akka.http.javadsl.ServerBinding;
 import akka.http.javadsl.model.HttpRequest;
 import akka.http.javadsl.model.HttpResponse;
+import akka.http.javadsl.model.Query;
 import akka.stream.ActorMaterializer;
 import akka.stream.javadsl.Flow;
 
@@ -18,7 +19,16 @@ public class App {
     private static final int PORT = 8080;
 
     private static Flow<HttpRequest, HttpResponse, NotUsed> createFlow(Http http, ActorSystem system,
-                                                                       ActorMaterializer materializer, ActorRef actorRef)
+                                                                       ActorMaterializer materializer, ActorRef actor) {
+        return Flow
+                .of(HttpRequest.class)
+                .map(
+                        (req) -> {
+                            Query query = req.getUri().query();
+                            
+                        }
+                )
+    }
 
     public static void main(String[] args) throws IOException {
         System.out.println("start!");
