@@ -57,7 +57,30 @@ public class App {
                     );
                     return completionStage.thenCompose(
                             res -> {
-                                
+                                if ((Integer)res >= 0) {
+                                    return CompletableFuture.completedFuture(
+                                            new Pair<>(
+                                                    req.first(),
+                                                    (Integer)res
+                                            )
+                                    );
+                                }
+                                Flow<Pair<String, Integer>, Integer, NotUsed> flow = Flow
+                                        .<Pair<String, Integer>>create()
+                                        .mapConcat(
+                                                pair -> new ArrayList<>(
+                                                        Collections.nCopies(
+                                                                pair.second(),
+                                                                pair.first()
+                                                        )
+                                                )
+                                        )
+                                        .mapAsync(
+                                                req.second(),
+                                                url -> {
+                                                    long start = 
+                                                }
+                                        )
                             }
                     )
                         })
