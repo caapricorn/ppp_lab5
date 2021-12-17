@@ -88,7 +88,12 @@ public class App {
                                                     return CompletableFuture.completedFuture((int)(end - start));
                                                 }
                                         );
-                                
+                                return Source
+                                        .single(req)
+                                        .via(flow)
+                                        .toMat(
+                                                Sink.fold()
+                                        )
                             }
                     )
                         })
