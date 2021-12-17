@@ -92,7 +92,15 @@ public class App {
                                         .single(req)
                                         .via(flow)
                                         .toMat(
-                                                Sink.fold()
+                                                Sink.fold(
+                                                        0,
+                                                        Integer::sum
+                                                ),
+                                                Keep.right()
+                                        )
+                                        .run(materializer)
+                                        .thenApply(
+                                                
                                         )
                             }
                     )
