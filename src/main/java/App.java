@@ -84,9 +84,11 @@ public class App {
                                                     long start = System.currentTimeMillis();
                                                     asyncHttpClient().prepareGet(url).execute();
                                                     long end = System.currentTimeMillis();
-                                                    System.out.println();
+                                                    System.out.println(TIME_RESPONSE + (int)(end - start) + "\n");
+                                                    return CompletableFuture.completedFuture((int)(end - start));
                                                 }
-                                        )
+                                        );
+                                
                             }
                     )
                         })
