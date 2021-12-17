@@ -44,7 +44,7 @@ public class App {
                         req -> {
                     CompletionStage<Object> completionStage = Patterns.ask(
                             actor,
-                            new Message(req.),
+                            new Message(req.first()),
                             Duration.ofSeconds(TIME_OUT)
                     );
                         })
