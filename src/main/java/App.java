@@ -55,6 +55,11 @@ public class App {
                             new Message(req.first()),
                             Duration.ofSeconds(TIME_OUT)
                     );
+                    return completionStage.thenCompose(
+                            res -> {
+                                
+                            }
+                    )
                         })
     }
 
