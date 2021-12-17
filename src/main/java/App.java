@@ -35,6 +35,7 @@ public class App {
     private static final int MAP_ASYNC = 1;
     private static final int TIME_OUT = 5;
     private static final String TIME_RESPONSE = "Responce time = ";
+    private static final String AVG_RESPONSE_TIME_PTR = "Average response time = ";
 
     private static Flow<HttpRequest, HttpResponse, NotUsed> createFlow(Http http, ActorSystem system,
                                                                        ActorMaterializer materializer, ActorRef actor) {
@@ -108,7 +109,18 @@ public class App {
                             }
                     );
                         })
-                .map()
+                .map(
+                        req -> {
+                            actor.tell(
+                                    new StorageMessage(
+                                            req.first(),
+                                            req.second()
+                                    ),
+                                    ActorRef.noSender()
+                            );
+                            System.out.println();
+                        }
+                )
     }
 
     public static void main(String[] args) throws IOException {
