@@ -1,4 +1,5 @@
 import akka.NotUsed;
+import akka.actor.ActorRef;
 import akka.actor.ActorSystem;
 import akka.http.javadsl.ConnectHttp;
 import akka.http.javadsl.Http;
@@ -17,7 +18,7 @@ public class App {
     private static final int PORT = 8080;
 
     private static Flow<HttpRequest, HttpResponse, NotUsed> createFlow(Http http, ActorSystem system,
-                                                                       ActorMaterializer)
+                                                                       ActorMaterializer materializer, ActorRef actorRef)
 
     public static void main(String[] args) throws IOException {
         System.out.println("start!");
