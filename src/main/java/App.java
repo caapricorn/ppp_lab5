@@ -17,6 +17,7 @@ public class App {
 
     private static final String LOCAL_HOST = "localhost";
     private static final int PORT = 8080;
+    private static final String TEST_URL = "testUrl";
 
     private static Flow<HttpRequest, HttpResponse, NotUsed> createFlow(Http http, ActorSystem system,
                                                                        ActorMaterializer materializer, ActorRef actor) {
@@ -25,7 +26,7 @@ public class App {
                 .map(
                         (req) -> {
                             Query query = req.getUri().query();
-                            
+                            String url = query.get()
                         }
                 )
     }
