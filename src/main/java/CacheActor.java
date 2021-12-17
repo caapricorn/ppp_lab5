@@ -1,4 +1,5 @@
 import akka.actor.AbstractActor;
+import akka.actor.ActorRef;
 import akka.japi.pf.ReceiveBuilder;
 
 import java.util.HashMap;
@@ -15,9 +16,20 @@ public class CacheActor extends AbstractActor {
                         Message.class,
                         m -> {
                             getSender().tell(
-                                    storage.getOrDefault(m.getUrl(), -1)
+                                    storage.getOrDefault(m.getUrl(), -1),
+                                    ActorRef.noSender()
                             );
                         }
                 )
+                .match(
+                        StorageMessage.class,
+                        m -> {
+                            storage.putIfAbsent(
+                                    m.getUrl(),
+                                    m.getTime()
+                            );
+                        }
+                )
+                .build();
     }
 }
