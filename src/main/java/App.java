@@ -118,18 +118,20 @@ public class App {
                                     ),
                                     ActorRef.noSender()
                             );
-                            System.out.println();
+                            System.out.println(AVG_RESPONSE_TIME_PTR + req.second());
+                            return HttpResponse.create().withEntity(req.second().toString() + '\n');
                         }
-                )
+                );
     }
 
     public static void main(String[] args) throws IOException {
         System.out.println("start!");
         ActorSystem system = ActorSystem.create("routes");
+        ActorRef actor = system.actorOf(Props.create(CacheActor.class));
         final Http http = Http.get(system);
         final ActorMaterializer materializer =
                 ActorMaterializer.create(system);
-        final Flow<HttpRequest, HttpResponse, NotUsed> routeFlow =
+        final Flow<HttpRequest, HttpResponse, NotUsed> routeFlow = createFlow(http, system, materializer, actor);
         final CompletionStage<ServerBinding> binding = http.bindAndHandle(
                 routeFlow,
                 ConnectHttp.toHost(LOCAL_HOST, PORT),
