@@ -15,6 +15,9 @@ import static jdk.nashorn.internal.parser.TokenType.RETURN;
 
 public class App {
 
+    private static final String LOCAL_HOST = "localhost";
+    private static final int PORT = 8080;
+
     public static void main(String[] args) throws IOException {
         System.out.println("start!");
         ActorSystem system = ActorSystem.create("routes");
@@ -24,7 +27,7 @@ public class App {
         final Flow<HttpRequest, HttpResponse, NotUsed> routeFlow =
         final CompletionStage<ServerBinding> binding = http.bindAndHandle(
                 routeFlow,
-                ConnectHttp.toHost("localhost", 8080),
+                ConnectHttp.toHost(LOCAL_HOST, PORT),
                 materializer
         );
         System.out.println("Server online at http://localhost:8080/\nPress
