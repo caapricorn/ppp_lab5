@@ -7,11 +7,13 @@ import akka.http.javadsl.ServerBinding;
 import akka.http.javadsl.model.HttpRequest;
 import akka.http.javadsl.model.HttpResponse;
 import akka.http.javadsl.model.Query;
+import akka.pattern.Patterns;
 import akka.stream.ActorMaterializer;
 import akka.stream.javadsl.Flow;
 import javafx.util.Pair;
 
 import java.io.IOException;
+import java.time.Duration;
 import java.util.concurrent.CompletionStage;
 
 public class App {
@@ -20,6 +22,8 @@ public class App {
     private static final int PORT = 8080;
     private static final String TEST_URL = "testUrl";
     private static final String COUNT = "count";
+    private static final int MAP_ASYNC = 1;
+    private static final int TIME_OUT = 5;
 
     private static Flow<HttpRequest, HttpResponse, NotUsed> createFlow(Http http, ActorSystem system,
                                                                        ActorMaterializer materializer, ActorRef actor) {
@@ -36,7 +40,14 @@ public class App {
                             return new Pair<String, Integer>(url, count);
                         }
                 )
-                .mapAsync()
+                .mapAsync(MAP_ASYNC,
+                        req -> {
+                    CompletionStage<Object> completionStage = Patterns.ask(
+                            actor,
+                            new Message(req.first()),
+                            Duration.ofSeconds(TIME_OUT)
+                    );
+                        })
     }
 
     public static void main(String[] args) throws IOException {
