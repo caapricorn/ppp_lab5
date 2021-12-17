@@ -30,8 +30,7 @@ public class App {
                 ConnectHttp.toHost(LOCAL_HOST, PORT),
                 materializer
         );
-        System.out.println("Server online at http://localhost:8080/\nPress
-                RETURN to stop...");
+        System.out.println("Server online at http://" + LOCAL_HOST + ":" + PORT);
         System.in.read();
         binding
                 .thenCompose(ServerBinding::unbind)
