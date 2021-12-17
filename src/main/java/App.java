@@ -11,8 +11,6 @@ import akka.stream.javadsl.Flow;
 import java.io.IOException;
 import java.util.concurrent.CompletionStage;
 
-import static jdk.nashorn.internal.parser.TokenType.RETURN;
-
 public class App {
 
     private static final String LOCAL_HOST = "localhost";
