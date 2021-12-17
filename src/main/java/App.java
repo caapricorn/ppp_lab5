@@ -24,6 +24,8 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionStage;
 import akka.pattern.Patterns;
 
+import static org.asynchttpclient.Dsl.asyncHttpClient;
+
 public class App {
 
     private static final String LOCAL_HOST = "localhost";
@@ -32,6 +34,7 @@ public class App {
     private static final String COUNT = "count";
     private static final int MAP_ASYNC = 1;
     private static final int TIME_OUT = 5;
+    private static final String TIME_RESPONSE = "Responce time = ";
 
     private static Flow<HttpRequest, HttpResponse, NotUsed> createFlow(Http http, ActorSystem system,
                                                                        ActorMaterializer materializer, ActorRef actor) {
@@ -78,7 +81,10 @@ public class App {
                                         .mapAsync(
                                                 req.second(),
                                                 url -> {
-                                                    long start = 
+                                                    long start = System.currentTimeMillis();
+                                                    asyncHttpClient().prepareGet(url).execute();
+                                                    long end = System.currentTimeMillis();
+                                                    System.out.println();
                                                 }
                                         )
                             }
