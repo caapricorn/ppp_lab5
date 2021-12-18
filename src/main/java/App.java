@@ -15,7 +15,6 @@ import akka.stream.javadsl.Keep;
 import akka.stream.javadsl.Sink;
 import akka.stream.javadsl.Source;
 
-
 import java.io.IOException;
 import java.time.Duration;
 import java.util.ArrayList;
@@ -36,6 +35,7 @@ public class App {
     private static final int TIME_OUT = 5;
     private static final String TIME_RESPONSE = "Responce time = ";
     private static final String AVG_RESPONSE_TIME_PTR = "Average response time = ";
+    private static final String NEW_LINE = "\n";
 
     private static Flow<HttpRequest, HttpResponse, NotUsed> createFlow(Http http, ActorSystem system,
                                                                        ActorMaterializer materializer, ActorRef actor) {
@@ -48,7 +48,7 @@ public class App {
                             int count = Integer.parseInt(
                                     query.get(COUNT).get()
                             );
-                            System.out.println(url + " - " + count + "");
+                            System.out.println(url + " - " + count);
                             return new Pair<String, Integer>(url, count);
                         }
                 )
@@ -85,7 +85,7 @@ public class App {
                                                     long start = System.currentTimeMillis();
                                                     asyncHttpClient().prepareGet(url).execute();
                                                     long end = System.currentTimeMillis();
-                                                    System.out.println(TIME_RESPONSE + (int)(end - start) + "\n");
+                                                    System.out.println(TIME_RESPONSE + (int)(end - start) + NEW_LINE);
                                                     return CompletableFuture.completedFuture((int)(end - start));
                                                 }
                                         );
@@ -119,7 +119,7 @@ public class App {
                                     ActorRef.noSender()
                             );
                             System.out.println(AVG_RESPONSE_TIME_PTR + req.second());
-                            return HttpResponse.create().withEntity(req.second().toString() + '\n');
+                            return HttpResponse.create().withEntity(req.second().toString() + NEW_LINE);
                         }
                 );
     }
