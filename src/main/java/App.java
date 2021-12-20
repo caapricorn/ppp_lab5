@@ -22,6 +22,8 @@ import java.util.Collections;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionStage;
 import akka.pattern.Patterns;
+import org.asynchttpclient.Dsl;
+import org.asynchttpclient.Request;
 
 import static org.asynchttpclient.Dsl.asyncHttpClient;
 
@@ -83,10 +85,14 @@ public class App {
                                                 req.second(),
                                                 url -> {
                                                     long start = System.currentTimeMillis();
-                                                    asyncHttpClient().prepareGet(url).execute();
-                                                    long end = System.currentTimeMillis();
-                                                    System.out.println(TIME_RESPONSE + (int)(end - start) + NEW_LINE);
-                                                    return CompletableFuture.completedFuture((int)(end - start));
+                                                    Request request = Dsl.get(url).build();
+                                                    return asyncHttpClient().executeRequest(request).toCompletableFuture()
+                                                            .thenCompose(
+                                                                    response -> {
+                                                                        int duration = (int) (System.currentTimeMillis() - start);
+                                                                        return CompletableFuture.completedFuture(duration);
+                                                                    }
+                                                            );
                                                 }
                                         );
                                 return Source
